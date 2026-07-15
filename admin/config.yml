@@ -9,7 +9,7 @@ public_folder: "/assets/images/uploads"
 collections:
   - name: "pages"
     label: "Pages"
-    folder: "./"
+    folder: "pages"  # Changed from "./" to "pages"
     create: true
     fields:
       - { label: "Title", name: "title", widget: "string" }
