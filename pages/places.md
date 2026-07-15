@@ -1,0 +1,5 @@
+* [Ikoma Serengeti House](#!ikoma_house)
+* [Pangani Beach - Under Canvas villa](#!pangani_beach)
+* [The Fort, Arusha Boutique Lodge](#!the_fort)
+* [Nakweni Porini Villa - Simanjiro](#!nakweni_villa)
+* [Rubondo Island - Lost Horizons - Exclusive Villa](#!rubondo_island)

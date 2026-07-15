@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>gaia exclusive</title>
+    <style>
+  *{box-sizing:border-box;margin:0;padding:0}body{font-family:poppins,-apple-system,sans-serif;color:#fff;background:#000;line-height:1.6;padding:1rem;min-height:100vh}
+@font-face{font-family:poppins;src:url("font/poppins-bold-webfont.woff2") format("woff2"),url("font/poppins-bold-webfont.woff") format("woff");font-weight:700;font-display:swap}
+#content,#nav,#places{max-width:65ch;margin:0 auto;width:100%}
+h1,h2,h3,h4,h5,h6{line-height:1.2;margin:1.5em 0 .5em;font-weight:700}h1{font-size:2rem;margin-top:0}h2{font-size:1.5rem}h3{font-size:1.25rem}
+p,ul,ol,pre,blockquote,table{margin:0 0 1em}p:last-child{margin-bottom:0}a{color:#fff;text-underline-offset:.2em}a:is(:hover,:focus){color:#ccc}
+ul,ol{padding-left:1.5rem}li{margin-bottom:.25em}img{max-width:100%;height:auto;display:block}code{background:#222;padding:.1em .4em;border-radius:3px;font-size:.9em}
+pre{background:#111;padding:1rem;overflow-x:auto;border-radius:5px;border:1px solid #333}pre code{background:transparent;padding:0;border-radius:0}
+blockquote{border-left:4px solid #fff;padding-left:1rem;font-style:italic;color:#ccc}
+table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{border:1px solid #333;padding:.5rem;text-align:left}th{background:#222}
+#nav{margin-bottom:2rem}#nav ul{list-style:none;padding:0;display:flex;gap:1rem;flex-wrap:wrap}#nav a{text-decoration:none;font-weight:700}#nav a:hover{text-decoration:underline}
+#places{margin-bottom:2rem; border-bottom:#ccc 2px solid;}#places ul{list-style:none;padding:0;display:block;font-size:.85rem;}#places a{text-decoration:none}#places a:hover{text-decoration:underline}
+@media(max-width:640px){#places ul{flex-direction:column;gap:.25rem}}
+@media(min-width:640px){body{padding:2rem}h1{font-size:2.5rem}h2{font-size:1.75rem}}
+@media(min-width:1024px){body{padding:3rem}h1{font-size:3rem}}
+    </style>
+</head>
+<body>
+    <div id="nav"></div>
+    <div id="places"></div>
+    <div id="content"></div>
+
+    <script src="js/marked.js"></script>
+    <script>
+        var oldtxt = "x";
+        
+        async function makenav() {
+        // Fetch main navigation
+        const navFile = await fetch("pages/nav.md");
+        const navText = await navFile.text();
+        document.getElementById("nav").innerHTML = marked(navText);
+        
+        // Fetch places navigation
+        const placesFile = await fetch("pages/places.md");
+        const placesText = await placesFile.text();
+        document.getElementById("places").innerHTML = marked(placesText);
+        }
+
+        async function fill(here) {
+            if (here === oldtxt) return;
+            document.getElementById("content").innerHTML = "";
+            try {
+                let file = await fetch("pages/" + here + ".md");
+                if (!file.ok) throw new Error('Not found');
+                let text = await file.text();
+                text = text.replace(/^---[\s\S]*?---\n/, '');
+                document.getElementById("content").innerHTML = marked(text);
+                document.body.className = here;
+            } catch (error) {
+                try {
+                    let errorFile = await fetch("pages/404.md");
+                    if (errorFile.ok) {
+                        let errorText = await errorFile.text();
+                        errorText = errorText.replace(/^---[\s\S]*?---\n/, '');
+                        document.getElementById("content").innerHTML = marked(errorText);
+                    } else {
+                        document.getElementById("content").innerHTML = marked(
+                            `# 404\n\nThe page "${here}" doesn't exist. [Home](#!home).`
+                        );
+                    }
+                } catch (fallbackError) {
+                    document.getElementById("content").innerHTML = marked(
+                        `# 404\n\nPage not found. [Home](#!home).`
+                    );
+                }
+                document.body.className = 'error';
+            }
+        }
+
+        // click
+        document.getElementById("nav").addEventListener("click", handleNavClick);
+        document.getElementById("places").addEventListener("click", handleNavClick);
+
+        function handleNavClick(e) {
+            if (e.target && e.target.nodeName == "A") {
+                e.preventDefault();
+                var hash = e.target.href.match(/#([\s\S]*)$/)[1].substring(1);
+                fill(hash);
+                oldtxt = hash;
+                history.replaceState(undefined, undefined, "#!" + hash);
+            }
+        }
+
+        document.getElementById("content").addEventListener("click", function(e) {
+            if (e.target && e.target.nodeName == "A") {
+                e.preventDefault();
+                var hash = e.target.href.match(/#([\s\S]*)$/)[1].substring(1);
+                fill(hash);
+                oldtxt = hash;
+                history.replaceState(undefined, undefined, "#!" + hash);
+            }
+        });
+
+        // Start
+        if (window.location.hash) {
+            makenav();
+            var hash = window.location.hash.substring(2);
+            fill(hash);
+            history.replaceState(undefined, undefined, "#!" + hash);
+        } else {
+            makenav();
+            document.body.className = "home";
+            fill("home");
+        }
+    </script>
+</body>
+</html>
