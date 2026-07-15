@@ -1,3 +1,7 @@
+---
+title: about
+---
+
 # about
 
-Lorem ipsum
+Lorem ipsum dolor
