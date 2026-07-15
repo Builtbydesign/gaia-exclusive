@@ -2,7 +2,7 @@ backend:
   name: github
   repo: Builtbydesign/gaia-exclusive
   branch: main
-  base_url: https://sveltia-cms-auth-worker.sveltia.workers.dev
+  base_url: https://gaia-exclusive.serious-kabisa.workers.dev
   auth_endpoint: /auth/github
 
 media_folder: "assets/images/uploads"
