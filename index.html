@@ -1,112 +1,230 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>gaia exclusive</title>
     <style>
-  *{box-sizing:border-box;margin:0;padding:0}body{font-family:poppins,-apple-system,sans-serif;color:#fff;background:#000;line-height:1.6;padding:1rem;min-height:100vh}
-@font-face{font-family:poppins;src:url("font/poppins-bold-webfont.woff2") format("woff2"),url("font/poppins-bold-webfont.woff") format("woff");font-weight:700;font-display:swap}
-#content,#nav,#places{max-width:65ch;margin:0 auto;width:100%}
-h1,h2,h3,h4,h5,h6{line-height:1.2;margin:1.5em 0 .5em;font-weight:700}h1{font-size:2rem;margin-top:0}h2{font-size:1.5rem}h3{font-size:1.25rem}
-p,ul,ol,pre,blockquote,table{margin:0 0 1em}p:last-child{margin-bottom:0}a{color:#fff;text-underline-offset:.2em}a:is(:hover,:focus){color:#ccc}
-ul,ol{padding-left:1.5rem}li{margin-bottom:.25em}img{max-width:100%;height:auto;display:block}code{background:#222;padding:.1em .4em;border-radius:3px;font-size:.9em}
-pre{background:#111;padding:1rem;overflow-x:auto;border-radius:5px;border:1px solid #333}pre code{background:transparent;padding:0;border-radius:0}
-blockquote{border-left:4px solid #fff;padding-left:1rem;font-style:italic;color:#ccc}
-table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{border:1px solid #333;padding:.5rem;text-align:left}th{background:#222}
-#nav{margin-bottom:2rem}#nav ul{list-style:none;padding:0;display:flex;gap:1rem;flex-wrap:wrap}#nav a{text-decoration:none;font-weight:700}#nav a:hover{text-decoration:underline}
-#places{margin-bottom:2rem; border-bottom:#ccc 2px solid;}#places ul{list-style:none;padding:0;display:block;font-size:.85rem;}#places a{text-decoration:none}#places a:hover{text-decoration:underline}
-@media(max-width:640px){#places ul{flex-direction:column;gap:.25rem}}
-@media(min-width:640px){body{padding:2rem}h1{font-size:2.5rem}h2{font-size:1.75rem}}
-@media(min-width:1024px){body{padding:3rem}h1{font-size:3rem}}
+        @font-face {
+            font-family: "Montserrat-ExtraLight";
+            src: url("font/Montserrat-ExtraLight.woff") format("woff");
+            font-weight: light;
+            font-style: normal;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: "Montserrat-ExtraLight", sans-serif;
+            color: #fff;
+            min-height: 100vh;
+            background: #5D2B16 url(concrete.jpg) center top repeat-y;
+            background-blend-mode: multiply;
+            background-size: cover;
+        }
+        
+        a {
+            color: #fff;
+            text-underline-offset: .2em;
+            text-decoration: none;
+        }
+        
+        a:hover, a:focus {
+            color: #fffccc;
+            text-decoration: underline;
+        }
+        
+        li { list-style: none; }
+        
+        #nav {
+            text-align: center;
+            padding: 1rem;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 99;
+        }
+        
+        #nav ul {
+            display: flex;
+            justify-content: space-around;
+            line-height: 30px;
+            font-size: 0.9em;
+        }
+        
+        #nav a { padding: 15px; }
+        
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 500px;
+            padding: 0;
+            margin: 0;
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        
+        #header {
+            width: 300px;
+        }
+        
+        #logo {
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+        
+        #logo svg {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(3px 3px 2px rgba(0,0,0,.5));
+            transition: all 0.2s ease;
+        }
+        
+        #logo:hover svg {
+            filter: sepia(100%) drop-shadow(3px 3px 9px rgba(0,0,0,.8));
+        }
+        
+        #places {
+            text-align: right;
+            line-height: 2em;
+            display: block;
+            margin-right: 50px;
+        }
+        
+        #content {
+            width: 100%;
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 0 25px;
+        }
+        
+        #footer {
+            text-align: center;
+            margin: 2rem auto;
+            font-size: 80%;
+            opacity: 0.6;
+        }
+        
+        #footer:before {
+            content: '-';
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (min-width: 640px) {
+            /*#nav {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                padding: 0;
+            }
+            
+            .container {
+                min-height: 70vh;
+                margin: 40px auto;
+            }
+                        
+            #header {
+                width: 300px;
+                margin: 0 auto;
+            }
+            
+            #places {
+                text-align: right;
+                margin-right: 46px;
+            }
+            
+            #logo svg {
+                width: 300px;
+                height: 150px;
+            }*/
+        }
     </style>
 </head>
 <body>
-    <div id="nav"></div>
-    <div id="places"></div>
+    <div id="nav">
+        <ul>
+            <li><a href="#!home">home</a></li>
+            <li><a href="#!about">about</a></li>
+            <li><a href="#!contact">contact</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <div id="header">
+            <a href="#!home" id="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" viewBox="0 0 300 150">
+                    <defs>
+                        <clipPath id="shape">
+                            <path fill="#fff" d="M211 36h-4v1l-4 8v1l1 3q2 2 5 1l2-2v-1l5-8zm43 41q3-3 4-7l-3 3-5 6-5 6q-2 3-6 3v-3q3-10 8-19v-4q-3-2-7-2l-3 1-6-3h-7q-7 2-9 8-7 13-18 23h-2v-1q4-14 10-25v-3h-9l-1 2-9 16-4 6q-3 3-7 4-2-2-1-5l2-4 5-9q3-4 1-8l-4-2h-3l-3 1q-5-4-13-3l-4 2-15 15-6 6q-2 2-6 2v-1l5-11 3-7 5-12-1-1q-2-3-6-4h-1l-6 7-19 22Q97 89 79 95l-7 2q-8 0-12-3-8-5-7-17 3-20 14-33 11-14 26-23 13-8 29-12 11-2 19 2l3 4q-1 6-4 10-11 13-27 22-8 5-19 8l-14 1h-7l-1 1 1 2q5 4 12 4h2q15-1 25-7 15-8 27-21 5-6 9-15v-5q-3-8-13-9-12-1-22 2-19 5-33 14L66 32Q53 43 46 60q-4 9-4 20 1 17 14 22 5 2 11 2h3q10-2 17-6 15-8 25-22 3-4 7-5l-4 12-6 11q-3 5-11 10l-18 11q-11 7-17 19v6q3 6 13 3 9-2 15-8 13-12 21-27l10-15 1-1 19-14h1q2 1 2 5v4q0 3 2 4l5 1q7-5 12-12 0-2 2-1 2 3 1 9l1 4 3 2h3l12-10h1l2 7q0 3 2 4h3q7-5 12-11l2-1 3 7 1 1 4 1q7-5 12-12l2-1q2 2 1 5v3q0 6 4 7h3q8-5 14-13zm-86-14v2q-5 10-14 17h-1l-1-2q4-11 13-17zm65 1 1 2q-6 10-15 17h-1v-3q4-10 12-16zM78 137l-9 3-1-1-1-2-1-2 1-1q6-11 17-18l5-3 8-5 7-4q3-2-1 5l-11 16q-6 8-14 12"/>
+                        </clipPath>
+                    </defs>
+                    <text x="160" y="120" fill="#fff" font-size="20">exclusive</text>
+                    <image width="300" height="150" clip-path="url(#shape)" xlink:href="metal.jpg"></image>
+                </svg>
+            </a>
+
+            <ul id="places">
+                <li><a href="#!the_fort">The Fort</a></li>
+                <li><a href="#!ikoma_house">Ikoma House</a></li>
+                <li><a href="#!nakweni_villa">Nakweni Porini Villa</a></li>
+                <li><a href="#!rubondo_island">Rubondo Island Villa</a></li>
+                <li><a href="#!pangani_beach">Beach Under Canvas</a></li>
+            </ul>
+        </div>
+
+    </div>
+
     <div id="content"></div>
+
+    <div id="footer">
+        <p>copyright & legal</p>
+    </div>
 
     <script src="js/marked.js"></script>
     <script>
-        var oldtxt = "x";
-        
-        async function makenav() {
-        // Fetch main navigation
-        const navFile = await fetch("pages/nav.md");
-        const navText = await navFile.text();
-        document.getElementById("nav").innerHTML = marked(navText);
-        
-        // Fetch places navigation
-        const placesFile = await fetch("pages/places.md");
-        const placesText = await placesFile.text();
-        document.getElementById("places").innerHTML = marked(placesText);
-        }
+        let current = null;
+        const cache = {};
 
-        async function fill(here) {
-            if (here === oldtxt) return;
-            document.getElementById("content").innerHTML = "";
-            try {
-                let file = await fetch("pages/" + here + ".md");
-                if (!file.ok) throw new Error('Not found');
-                let text = await file.text();
-                text = text.replace(/^---[\s\S]*?---\n/, '');
-                document.getElementById("content").innerHTML = marked(text);
-                document.body.className = here;
-            } catch (error) {
-                try {
-                    let errorFile = await fetch("pages/404.md");
-                    if (errorFile.ok) {
-                        let errorText = await errorFile.text();
-                        errorText = errorText.replace(/^---[\s\S]*?---\n/, '');
-                        document.getElementById("content").innerHTML = marked(errorText);
-                    } else {
-                        document.getElementById("content").innerHTML = marked(
-                            `# 404\n\nThe page "${here}" doesn't exist. [Home](#!home).`
-                        );
-                    }
-                } catch (fallbackError) {
-                    document.getElementById("content").innerHTML = marked(
-                        `# 404\n\nPage not found. [Home](#!home).`
-                    );
-                }
-                document.body.className = 'error';
-            }
-        }
-
-        // click
-        document.getElementById("nav").addEventListener("click", handleNavClick);
-        document.getElementById("places").addEventListener("click", handleNavClick);
-
-        function handleNavClick(e) {
-            if (e.target && e.target.nodeName == "A") {
+        document.addEventListener('click', e => {
+            const link = e.target.closest('a');
+            if (!link) return;
+            
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#!')) {
                 e.preventDefault();
-                var hash = e.target.href.match(/#([\s\S]*)$/)[1].substring(1);
-                fill(hash);
-                oldtxt = hash;
-                history.replaceState(undefined, undefined, "#!" + hash);
-            }
-        }
-
-        document.getElementById("content").addEventListener("click", function(e) {
-            if (e.target && e.target.nodeName == "A") {
-                e.preventDefault();
-                var hash = e.target.href.match(/#([\s\S]*)$/)[1].substring(1);
-                fill(hash);
-                oldtxt = hash;
-                history.replaceState(undefined, undefined, "#!" + hash);
+                go(href.substring(2));
             }
         });
 
-        // Start
-        if (window.location.hash) {
-            makenav();
-            var hash = window.location.hash.substring(2);
-            fill(hash);
-            history.replaceState(undefined, undefined, "#!" + hash);
-        } else {
-            makenav();
-            document.body.className = "home";
-            fill("home");
+        window.addEventListener('popstate', () => {
+            go(location.hash.substring(2) || 'home', false);
+        });
+
+        async function go(page, push = true) {
+            if (page === current) return;
+            current = page;
+            document.getElementById('content').innerHTML = await load(page);
+            document.body.className = page;
+            if (push) history.pushState(null, '', `#!${page}`);
         }
+
+        async function load(page) {
+            if (cache[page]) return cache[page];
+            try {
+                const res = await fetch(`pages/${page}.md`);
+                if (!res.ok) throw new Error();
+                let text = await res.text();
+                return cache[page] = marked(text.replace(/^---[\s\S]*?---\n/, ''));
+            } catch {
+                return cache[page] = marked(`# 404\n\nPage not found. [Home](#!home).`);
+            }
+        }
+
+        go(location.hash.substring(2) || 'home', false);
     </script>
 </body>
 </html>
