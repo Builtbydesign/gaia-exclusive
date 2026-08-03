@@ -88,21 +88,27 @@ function animateNext() {
   }
   const path = paths[index];
   const length = path.getTotalLength();
-  const duration = index === 0 ? 0.6 : 0.3;
+  const duration = index === 0 ? 0.4 : 0.2;
   path.style.transition = `stroke-dashoffset ${duration}s ease-in-out`;
   void path.offsetWidth;
   path.style.strokeDashoffset = '0';
   index++;
   animationTimer = setTimeout(animateNext, duration*1000);
+  if (index== 5 || 9 || 13) {
+    zzfx(...[0.05,0,30,.06,.4,.12,3,12.2,,,,,,.1,0.0,,,.05,.01]);
+  }
 }
 
 function clicksnd(index) {
   if (!zzfxX && !reset) {zzfxX=new AudioContext;}  
-  zzfx(...[0.1,0,index*30,.06,.28,.22,1,2.2,,,,,,.1,0.0,,,.96,.08]);
+
+  const freq = 30+index*30;
+  zzfx(...[0.03,0,freq,.06,.4,.12,3,12.2,,,,,,.1,0.0,,,.16,.01]);
 }
 
 function resetAnimation() {
   reset = true;
+
   if (animationTimer) {
     clearTimeout(animationTimer);
     animationTimer = null;
@@ -117,11 +123,11 @@ function resetAnimation() {
     path.style.transition = 'none';
   });
   void document.body.offsetWidth;
-  setTimeout(animateNext, 300);
+  setTimeout(animateNext, 10);
 }
 
 preparePaths();
-setTimeout(animateNext, 300);
+setTimeout(animateNext, 10);
 </script>
 
 </body>
