@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Flipbook</title>
+  <style>
+    @font-face {
+      font-family: 'Montserrat-Regular';
+      src: url('font/Montserrat-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: #555;
+      font-family: 'Montserrat-Regular', system-ui, sans-serif;
+      overflow: hidden;
+    }
+    body:before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.6) 100%);
+      position: absolute;
+      top: 0; left: 0;
+      user-select: none;
+      pointer-events: none;
+    }
+    #logo {
+      display: block;
+      width: 180px;
+      height: 100px;
+      position: absolute;
+      top: 0; right: 0;
+      opacity: 0.5;
+      z-index: 999;
+      user-select: none;
+      pointer-events: none;
+    }
+    #stage {
+      position: fixed;
+      inset: 0;
+    }
+    #stage canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      outline: none;
+      cursor: grab;
+    }
+    #stage canvas:active { cursor: grabbing; }
+    #controls {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 8px 14px;
+      z-index: 10;
+    }
+    #controls button {
+      background: transparent;
+      color: #000;
+      padding: 8px 16px;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      font-family: monospace;
+      font-size: 3em;
+      line-height: 1em;
+    }
+    #controls button:hover:not(:disabled) { color: #fff; }
+    #controls button:disabled { opacity: 0.35; cursor: not-allowed; }
+    #counter {
+      color: #000;
+      font-size: 13px;
+      min-width: 70px;
+      text-align: center;
+    }
+    #loading {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      background: #1a1a1a;
+      z-index: 20;
+    }
+    #loading[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <div id="logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 400" id="svglogo">
+      <path id="ink" d="m342 194 6-10 2-7q0-4-8-4h-7l-4 3q-3 2-12 20-17 32-27 30l7-21 8-27q0-2-3-4l-6-2-4 2-4 1-2-1-6-3q-5-2-11-2-8 0-15 5l-13 15q-8 11-16 18t-22 10l12-28 12-26q0-5-2-9-3-4-7-4-7 0-12 4l-11 12-12 17q-9 11-19 20-27 24-44 32-12 6-25 6-16 0-26-14l-6-12q-2-6-1-22t15-40 39-41q24-18 45-27 18-7 47-7 10 0 17 4 6 4 6 10l-2 8-10 17q-9 13-24 23-14 11-22 14l-19 7-18 5h-26l-11-1q3 8 9 11 5 3 14 3 18 0 44-11 20-9 35-20 14-11 29-33 14-22 12-27t-10-11l-6-3h-2l-3-1-8-2h-26q-19 2-44 11-24 10-47 29t-38 44-15 49q-2 29 16 42 13 9 33 9l17-2q13-3 34-15t45-46l-12 28q-4 9-7 12-2 4-8 7l-9 6-20 14-20 16-16 13q-11 10-12 20t3 16 11 6q8 0 14-2 6-1 25-18t37-42l16-25 7-13q5-8 8-8l8-4 6-3 8-4 7-2v3l1 10q0 5 4 11 3 6 10 2 6-4 11-10l10-12 5-6q-1 10 2 19 2 8 5 11 8-1 17-8 10-6 13-12h1q0 6 4 13l5 8q8-2 17-9t12-14l2 3 2 5 4 6 3 3q4 0 15-8 11-9 18-17-2 10 2 19 3 8 6 11 13-5 27-19 14-15 17-27l-17 18-19 17 6-24 9-24-2-3-8-2-4 1-4 1-7-3q-6-3-13-3l-9 1-7 3-14 22q-8 14-17 24-8 9-12 9 3-18 11-34m31 19 3-9q7-13 25-25-4 20-13 31l-7 5-3 2q-4 0-5-4M93 318q-4-4 0-11 10-19 76-64l-28 40-17 21q-7 9-13 12-5 4-11 4-5 0-7-2m160-105q0-4 3-10 8-15 25-24 0 14-11 27l-8 8q-3 3-5 3-4 0-4-4m114-79-2-3q-2-3-5-3-5 0-10 4-4 3-5 8-2 5 0 8 3 4 9 4 3 0 8-5 5-6 5-13" fill="#000"/>
+      <text id="txt" x="240" y="290" fill="#000" font-size="36">exclusive</text>
+    </svg>
+  </div>
+
+  <div id="stage"></div>
+
+  <div id="controls">
+    <button id="prev" disabled>◀</button>
+    <span id="counter">1 / 1</span>
+    <button id="next">▶</button>
+  </div>
+
+  <div id="loading">Loading images…</div>
+
+  <script type="importmap">
+    { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+
+    // ============================================================
+    //  IMAGES — plain list of photos.
+    //  For n photos you get n+1 spreads:
+    //    [1]  [1,2]  [2,3]  [3,nothing]   (n=3)
+    //  The final "nothing" on the right is the bare table.
+    // ============================================================
+    const PHOTOS = ['1.jpg', '2.jpg', '3.jpg'];
+
+    // ============================================================
+    //  Paper-curl vertex shader
+    // ============================================================
+    const PAPER_PARS = `
+      uniform float uProgress;
+      uniform float uBend;
+      uniform float uDirection;
+      uniform float uLift;
+      uniform vec2 uFold;
+      uniform vec2 uCurl;
+      uniform vec2 uRotation;
+
+      float paperRipple(vec2 p) {
+        return (sin(p.x * 7.2 + p.y * 2.7 + 0.8) * 0.4
+              + sin(p.x * 3.1 - p.y * 4.9) * 0.35
+              + cos(p.x * 13.4 + p.y * 8.1) * 0.12) * 0.012;
+      }
+
+      vec3 paperPosition(vec2 p) {
+        float x = p.x;
+        float y = (p.y - 0.5);
+        float along = x * uFold.x + y * uFold.y;
+        float across = -x * uFold.y + y * uFold.x;
+        float distance = max(0.0, along - uCurl.x);
+        float angle = distance / max(uCurl.y, 0.001) * uBend;
+        float sinc = abs(angle) < 0.0001 ? 1.0 : sin(angle) / angle;
+        float versine = abs(angle) < 0.0001 ? 0.0 : (1.0 - cos(angle)) / angle;
+        float curved = along - distance + distance * sinc;
+        vec3 shape = vec3(curved * uFold.x - across * uFold.y,
+                          curved * uFold.y + across * uFold.x,
+                          -uDirection * distance * versine);
+        vec3 result = vec3(shape.x * uRotation.x - shape.z * uRotation.y,
+                           shape.y,
+                           shape.x * uRotation.y + shape.z * uRotation.x);
+        float lift = 0.039 * sin(min(x / 0.145, 1.0) * 1.5707963);
+        lift -= 0.006 * smoothstep(0.145, 0.56, x);
+        lift += 0.006 * smoothstep(0.56, 0.73, x);
+        lift -= 0.012 * smoothstep(0.73, 1.0, x);
+        result.z += (lift + paperRipple(vec2(x,y)) * smoothstep(0.0,0.35,x)
+                    * -cos(uProgress * 3.14159265)) * uLift;
+        return result;
+      }
+    `;
+
+    // Front shows the photo. Back is the same photo, mirrored + darker.
+    function createPageMaterial(frontTex, uniforms) {
+      const material = new THREE.MeshStandardMaterial({
+        map: frontTex,
+        side: THREE.DoubleSide,
+        roughness: 0.62,
+        metalness: 0.08,
+      });
+
+      material.onBeforeCompile = (shader) => {
+        Object.assign(shader.uniforms, uniforms);
+
+        shader.vertexShader = PAPER_PARS + shader.vertexShader;
+        shader.vertexShader = shader.vertexShader.replace(
+          '#include <beginnormal_vertex>',
+          `
+          vec3 center = paperPosition(uv);
+          vec3 dx = paperPosition(uv + vec2(0.012, 0.0)) - center;
+          vec3 dy = paperPosition(uv + vec2(0.0, 0.012)) - center;
+          vec3 objectNormal = normalize(cross(dx, dy));
+          `
+        );
+        shader.vertexShader = shader.vertexShader.replace(
+          '#include <begin_vertex>',
+          'vec3 transformed = paperPosition(uv);'
+        );
+
+        shader.fragmentShader = shader.fragmentShader.replace(
+          '#include <map_fragment>',
+          `
+          #ifdef USE_MAP
+            vec4 frontInk = texture2D(map, vMapUv);
+            vec4 backInk  = texture2D(map, vec2(1.0 - vMapUv.x, vMapUv.y));
+            vec4 ink = gl_FrontFacing ? frontInk : backInk;
+            if (!gl_FrontFacing) ink.rgb *= 0.72;
+            diffuseColor *= ink;
+          #endif
+          `
+        );
+      };
+
+      const depthMaterial = new THREE.MeshDepthMaterial({
+        depthPacking: THREE.RGBADepthPacking,
+        side: THREE.DoubleSide,
+      });
+      depthMaterial.onBeforeCompile = (shader) => {
+        Object.assign(shader.uniforms, uniforms);
+        shader.vertexShader = PAPER_PARS + shader.vertexShader;
+        shader.vertexShader = shader.vertexShader.replace(
+          '#include <begin_vertex>',
+          'vec3 transformed = paperPosition(uv);'
+        );
+      };
+
+      return { material, depth: depthMaterial };
+    }
+
+    // ============================================================
+    //  Helpers
+    // ============================================================
+    const clamp = THREE.MathUtils.clamp;
+    const lerp = THREE.MathUtils.lerp;
+    const damp = (a, b, lambda, dt) => lerp(a, b, 1 - Math.exp(-lambda / dt));
+    const smoothstep01 = (x) => {
+      x = clamp(x, 0, 1);
+      return x * x * (3 - 2 * x);
+    };
+
+    // ============================================================
+    //  FlipBook
+    // ============================================================
+    class FlipBook {
+      constructor(stage, photos, onChange) {
+        this.stage = stage;
+        this.onChange = onChange;
+        this.photos = photos;
+
+        // n photos -> n+1 spreads. Sheet i carries photo i.
+        // The final spread has no sheet on the right (bare table).
+        this.count = photos.length + 1;
+        this.page = 0;      // 0..count-1
+        this.curl = 0.83;
+
+        this.animations = new Map();
+        this.abort = new AbortController();
+        this.dirty = true;
+
+        // Scene + camera
+        this.scene = new THREE.Scene();
+        this.scene.background = null;
+        this.camera = new THREE.PerspectiveCamera(40, 1, 0.1, 20);
+        this.camera.position.set(0, 0, 2.2);
+
+        // Renderer — transparent so CSS background (the table) shows through
+        this.renderer = new THREE.WebGLRenderer({
+          antialias: true, alpha: true,
+        });
+        this.renderer.setClearAlpha(0);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        this.renderer.shadowMap.autoUpdate = false;
+        this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+        this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        this.renderer.toneMappingExposure = 1.1;
+        this.canvas = this.renderer.domElement;
+        stage.appendChild(this.canvas);
+
+        // Book group — spine at viewport centre → book reads as right side.
+        this.group = new THREE.Group();
+        this.group.position.x = -0.5;
+        this.scene.add(this.group);
+
+        // Lights
+        this.scene.add(new THREE.HemisphereLight(0xffffff, 0x9c8b7b, 2));
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 2.6);
+        dirLight.position.set(-3.5, 1.3, 4.1);
+        dirLight.castShadow = true;
+        dirLight.shadow.mapSize.set(2048, 2048);
+        Object.assign(dirLight.shadow.camera, {
+          left: -1.65, right: 1.65, top: 1.05, bottom: -1.05, near: 1, far: 8,
+        });
+        dirLight.shadow.radius = 32;
+        this.scene.add(dirLight);
+
+        // Soft shadow catcher (invisible surface that only receives shadow)
+        const shadowCatcher = new THREE.Mesh(
+          new THREE.PlaneGeometry(20, 20),
+          new THREE.ShadowMaterial({ opacity: 0.25 })
+        );
+        shadowCatcher.position.z = -0.015;
+        shadowCatcher.receiveShadow = true;
+        this.scene.add(shadowCatcher);
+
+        // One sheet per photo.
+        const geo = new THREE.PlaneGeometry(1, 1, 128, 128);
+        this.sheets = [];
+
+        for (let i = 0; i < photos.length; i++) {
+          const uniforms = {
+            uProgress: { value: 0 },
+            uBend: { value: 0 },
+            uDirection: { value: 1 },
+            uLift: { value: 1 },
+            uFold: { value: new THREE.Vector2(1, 0) },
+            uCurl: { value: new THREE.Vector2(0, 1) },
+            uRotation: { value: new THREE.Vector2(1, 0) },
+          };
+
+          const { material, depth } = createPageMaterial(photos[i], uniforms);
+
+          const mesh = new THREE.Mesh(geo, material);
+          mesh.customDepthMaterial = depth;
+          mesh.frustumCulled = false;
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+          this.group.add(mesh);
+
+          this.sheets.push({
+            mesh,
+            uniforms,
+            progress: 0,
+            angle: 0,
+            angleTarget: 0,
+            arc: 0,
+            arcTarget: 0,
+            direction: 1,
+            directionTarget: 1,
+          });
+        }
+
+        // Pointer
+        this.ray = new THREE.Raycaster();
+        this.plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+        this.hit = new THREE.Vector3();
+        this.pointerNdc = new THREE.Vector2();
+        this.bindPointer();
+
+        // Resize
+        this.resizeObserver = new ResizeObserver(() => this.resize());
+        this.resizeObserver.observe(stage);
+        this.resize();
+
+        // Visibility
+        this.visible = true;
+        this.intersectionObserver = new IntersectionObserver(([entry]) => {
+          this.visible = entry.isIntersecting;
+          this.updateLoop();
+        });
+        this.intersectionObserver.observe(stage);
+
+        document.addEventListener('visibilitychange', () => this.updateLoop(), {
+          signal: this.abort.signal,
+        });
+
+        this.updateLoop();
+        this.emit();
+      }
+
+      resize() {
+        const rect = this.stage.getBoundingClientRect();
+        this.camera.aspect = rect.width / rect.height;
+        this.viewHeight = Math.max(1.0 / 0.8, 2.3 / this.camera.aspect);
+        this.camera.fov =
+          2 * Math.atan(this.viewHeight / 2 / 3.1) * (180 / Math.PI);
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(rect.width, rect.height, false);
+        this.dirty = true;
+      }
+
+      updateLoop() {
+        this.previousTime = 0;
+        this.dirty = true;
+        this.renderer.setAnimationLoop(
+          !document.hidden && this.visible
+            ? (t) => this.frame(t)
+            : null
+        );
+      }
+
+      point(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        this.pointerNdc.set(
+          ((e.clientX - rect.left) / rect.width) * 2 - 1,
+          -((e.clientY - rect.top) / rect.height) * 2 + 1
+        );
+        this.ray.setFromCamera(this.pointerNdc, this.camera);
+        this.ray.ray.intersectPlane(this.plane, this.hit);
+        return {
+          x: this.hit.x - this.group.position.x,
+          y: this.hit.y,
+        };
+      }
+
+      curve(sheet, point) {
+        const angleTarget = clamp(
+          -Math.atan2(point.y, Math.abs(point.x) + 0.15) * 0.48,
+          -0.68,
+          0.68
+        );
+        sheet.angleTarget = angleTarget;
+        sheet.arcTarget = this.curl * (0.94 + Math.abs(point.y) * 0.08);
+      }
+
+      bindPointer() {
+        const on = (event, fn, opts = {}) =>
+          this.canvas.addEventListener(event, fn, {
+            ...opts,
+            signal: this.abort.signal,
+          });
+
+        on('pointerdown', (e) => {
+          if (e.button !== 0 || this.gesture) return;
+
+          // On the final spread (bare table on the right), only the
+          // current sheet on the left can be turned back.
+          const pt = this.point(e);
+          if (Math.abs(pt.y) > 0.75) return;
+
+          const forward = pt.x >= 0;
+
+          // If we're at the last spread, forward-turn isn't allowed.
+          if (forward && this.page >= this.photos.length) return;
+
+          // Pick the sheet the user is grabbing.
+          // Forward turn: grab the sheet on the right (this.sheets[this.page]).
+          // Back turn:    grab the sheet on the left  (this.sheets[this.page - 1]).
+          const index = forward ? this.page : this.page - 1;
+          const sheet = this.sheets[index];
+          if (!sheet) return;
+
+          this.hover = null;
+          this.animations.delete(index);
+          this.curve(sheet, pt);
+          sheet.directionTarget = forward ? 1 : -1;
+
+          this.gesture = {
+            index,
+            forward,
+            startX: e.clientX,
+            base: sheet.progress,
+            target: sheet.progress,
+            moved: false,
+            speed: 0,
+            pointerId: e.pointerId,
+          };
+          this.canvas.setPointerCapture(e.pointerId);
+          this.dirty = true;
+        });
+
+        on('pointermove', (e) => {
+          const g = this.gesture;
+
+          if (!g) {
+            if (this.page >= this.photos.length) {
+              // Hover only the sheet on the left (which is this.photos.length - 1).
+              const pt = this.point(e);
+              const idx = this.photos.length - 1;
+              this.hover =
+                pt.x < 0 && Math.abs(pt.x) < 1.04 && Math.abs(pt.y) < 0.71
+                  ? idx
+                  : null;
+              if (this.hover !== null && this.sheets[this.hover]) {
+                this.curve(this.sheets[this.hover], pt);
+              }
+              return;
+            }
+
+            const pt = this.point(e);
+            const idx = pt.x >= 0 ? this.page : this.page - 1;
+            this.hover =
+              Math.abs(pt.x) < 1.04 &&
+              Math.abs(pt.y) < 0.71 &&
+              !this.animations.has(idx)
+                ? idx
+                : null;
+            if (this.hover !== null && this.sheets[this.hover]) {
+              this.curve(this.sheets[this.hover], pt);
+            }
+            return;
+          }
+
+          if (g.pointerId !== e.pointerId) return;
+          const dx = e.clientX - g.startX;
+          if (Math.abs(dx) > 6) g.moved = true;
+
+          const scale =
+            this.canvas.getBoundingClientRect().height / this.viewHeight;
+          g.target = clamp(g.base - dx / (scale * 1.4), 0, 1);
+          this.curve(this.sheets[g.index], this.point(e));
+          this.dirty = true;
+        });
+
+        const finish = (e) => {
+          const g = this.gesture;
+          if (!g || g.pointerId !== e.pointerId) return;
+          this.gesture = null;
+          this.hover = null;
+          if (this.canvas.hasPointerCapture(e.pointerId)) {
+            this.canvas.releasePointerCapture(e.pointerId);
+          }
+
+          const delta = g.forward ? g.target - g.base : g.base - g.target;
+          const speed = g.forward ? g.speed : -g.speed;
+          const shouldFlip =
+            e.type !== 'pointercancel' &&
+            (!g.moved || delta > 0.18 || speed > 0.7);
+
+          const dir = shouldFlip ? Number(g.forward) : +!g.forward;
+          if (shouldFlip) {
+            if (g.forward && this.page < this.count - 1) this.page++;
+            else if (!g.forward && this.page > 0) this.page--;
+          }
+          this.animate(g.index, dir, g.speed);
+          this.emit();
+        };
+
+        on('pointerup', finish);
+        on('pointercancel', finish);
+        on('pointerleave', () => { this.hover = null; });
+        on('lostpointercapture', () => {
+          if (!this.gesture) return;
+          const g = this.gesture;
+          this.gesture = null;
+          this.animate(g.index, +!g.forward, 0);
+        });
+      }
+
+      animate(index, to, speed = 0) {
+        const sheet = this.sheets[index];
+        const delta = Math.abs(to - sheet.progress);
+        const duration = Math.max(0.22, 1.05 * Math.sqrt(delta));
+        const launch =
+          delta < 0.001
+            ? 0
+            : clamp((speed * duration) / (to - sheet.progress), 0, 2.3);
+        this.animations.set(index, {
+          from: sheet.progress,
+          to,
+          start: performance.now(),
+          duration: duration * 1000,
+          launch,
+        });
+        this.dirty = true;
+      }
+
+      turn(dir) {
+        const forward = dir > 0;
+        if (forward && this.page >= this.count - 1) return;
+        if (!forward && this.page <= 0) return;
+
+        const index = forward ? this.page : this.page - 1;
+        const sheet = this.sheets[index];
+        if (!sheet) return;
+        this.hover = null;
+        sheet.directionTarget = forward ? 1 : -1;
+        this.curve(sheet, { x: 0.9, y: -0.25 });
+        this.page += forward ? 1 : -1;
+        this.animate(index, Number(forward));
+        this.emit();
+      }
+
+      emit() {
+        this.onChange?.(this.page, this.count, this.photos.length);
+      }
+
+      frame(time) {
+        const dt = this.previousTime
+          ? Math.min((time - this.previousTime) / 1000, 0.05)
+          : 0.016666666666666666;
+        this.previousTime = time;
+        let animating = this.animations.size > 0 || !!this.gesture;
+
+        for (const [index, anim] of this.animations) {
+          const t = clamp((time - anim.start) / anim.duration, 0, 1);
+          const eased =
+            (t ** 3 - 2 * t ** 2 + t) * anim.launch + smoothstep01(t);
+          this.sheets[index].progress = lerp(anim.from, anim.to, eased);
+          if (t >= 1) {
+            this.animations.delete(index);
+            this.dirty = true;
+          }
+        }
+
+        if (this.gesture) {
+          const sheet = this.sheets[this.gesture.index];
+          const next = damp(sheet.progress, this.gesture.target, dt, 0.12);
+          this.gesture.speed = (next - sheet.progress) / dt;
+          sheet.progress = next;
+        }
+
+        for (let i = 0; i < this.sheets.length; i++) {
+          const sheet = this.sheets[i];
+
+          if (!this.animations.has(i) && this.gesture?.index !== i) {
+            let target = i < this.page ? 1 : 0;
+            if (i === this.hover) {
+              target += (i < this.page ? -1 : 1) * 0.025;
+            }
+            if (Math.abs(sheet.progress - target) > 0.00005) {
+              sheet.progress = damp(sheet.progress, target, dt, 0.28);
+              animating = true;
+            } else {
+              sheet.progress = target;
+            }
+          }
+
+          for (const [prop, lambda] of [
+            ['angle', 0.09],
+            ['arc', 0.1],
+            ['direction', 0.13],
+          ]) {
+            const target = sheet[prop + 'Target'];
+            if (Math.abs(sheet[prop] - target) > 0.00005) {
+              sheet[prop] = damp(sheet[prop], target, dt, lambda);
+              animating = true;
+            } else {
+              sheet[prop] = target;
+            }
+          }
+
+          const progress = sheet.progress;
+          const angle = sheet.angle;
+          const cosA = Math.cos(angle);
+          const sinA = Math.sin(angle);
+          const d = 1 - 0.6885 * Math.sin(Math.abs(angle));
+          const f = 1 - d;
+          const arcAngle = Math.sin(progress * Math.PI) * Math.PI * sheet.arc;
+          const v = Math.max(0, cosA + sinA * (0.6885 * Math.sign(sinA)) - f);
+          const bend = (v / d) * arcAngle;
+          const rotAngle =
+            progress * Math.PI +
+            sheet.direction *
+              v *
+              (Math.abs(bend) < 0.0001
+                ? 0
+                : (1 - Math.cos(bend)) / bend) *
+              0.5;
+
+          const u = sheet.uniforms;
+          u.uProgress.value = progress;
+          u.uDirection.value = sheet.direction;
+          u.uBend.value = bend;
+          u.uLift.value = 1;
+          u.uCurl.value.set(f, d);
+          u.uFold.value.set(cosA, sinA);
+          u.uRotation.value.set(Math.cos(rotAngle), Math.sin(rotAngle));
+
+          sheet.mesh.position.z =
+            lerp(this.sheets.length - 1 - i, i, progress) * 0.0015;
+
+         
+        }
+
+        if (animating || this.dirty) {
+          this.renderer.shadowMap.needsUpdate = true;
+          this.renderer.render(this.scene, this.camera);
+          this.dirty = false;
+        }
+      }
+
+      dispose() {
+        this.abort.abort();
+        this.resizeObserver.disconnect();
+        this.intersectionObserver.disconnect();
+        this.renderer.setAnimationLoop(null);
+        this.scene.traverse((obj) => {
+          obj.geometry?.dispose();
+          obj.material?.dispose();
+          obj.customDepthMaterial?.dispose();
+        });
+        this.renderer.dispose();
+        this.canvas.remove();
+      }
+    }
+
+    // ============================================================
+    //  Load images, then start
+    // ============================================================
+    async function init() {
+      const loader = new THREE.TextureLoader();
+      const textures = [];
+
+      try {
+        for (let i = 0; i < PHOTOS.length; i++) {
+          const tex = await loader.loadAsync('images/' + PHOTOS[i]);
+          tex.colorSpace = THREE.SRGBColorSpace;
+          tex.anisotropy = 8;
+          textures.push(tex);
+        }
+
+        document.getElementById('loading').hidden = true;
+
+        const book = new FlipBook(
+          document.getElementById('stage'),
+          textures,
+          (page, count, photoCount) => {
+            // Counter shows 1..photoCount. The final "bare table" spread
+            // still displays the last photo's number.
+            const displayPage = Math.min(page + 1, photoCount);
+            document.getElementById('counter').textContent =
+              `${displayPage} / ${photoCount}`;
+            document.getElementById('prev').disabled = page === 0;
+            document.getElementById('next').disabled = page === count - 1;
+          }
+        );
+
+        document.getElementById('prev').addEventListener('click', () => book.turn(-1));
+        document.getElementById('next').addEventListener('click', () => book.turn(1));
+      } catch (err) {
+        console.error(err);
+        document.getElementById('loading').textContent =
+          'Failed to load images: ' + (err.message || err);
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
