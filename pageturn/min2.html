@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>gaia · exclusive</title>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <style>
+    @font-face {
+      font-family: 'Montserrat-Regular';
+      src: url('font/Montserrat-Regular.ttf') format('truetype');
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'LibreBaskerville-Regular';
+      src: url('font/LibreBaskerville-Regular.otf') format('opentype');
+      font-display: swap;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      background: #555;
+      color: #eee;
+      font-family: 'Montserrat-Regular', system-ui, sans-serif;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.2) 100%);
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'LibreBaskerville-Regular', serif;
+      font-weight: normal;
+    }
+    a { color: #ffc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    li { list-style: none; }
+
+    /* ---------- header ---------- */
+    header.container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 999;
+    }
+    #logo {
+      display: block;
+      width: 200px;
+      height: 130px;
+    }
+    #logo::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: -200px; left: -200px;
+      width: 400px; height: 400px;
+      transform: rotate(45deg);
+      background: linear-gradient(90deg,
+        rgba(0,0,0,0.9) 0%,
+        rgba(0,0,0,0) 100%);
+      z-index: -1;
+    }
+    ul#places {
+      margin: -30px 0 0 0;
+      padding: 20px;
+      width: 230px;
+      line-height: 24px;
+      text-indent: 1em;
+      text-align: left;
+      position: relative;
+      z-index: 999;
+    }
+    ul#places li a {
+      display: block;
+      font-size: 1em;
+      color: #fff;
+    }
+    ul#places li a:hover { color: #ffc; }
+    #logo svg text, ul#places {
+      text-shadow: 0 2px 2px rgba(0,0,0,0.7);
+    }
+
+    /* ---------- sections ---------- */
+    section {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      margin: 0 auto;
+      padding: 0;
+    }
+    section img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    section .textbox {
+      position: absolute;
+      right: 50px;
+      bottom: 50px;
+      color: #fff;
+      z-index: 99;
+      line-height: 0.7em;
+    }
+    section .textbox h1 { margin: 0 0 8px; }
+    section .textbox h2 {
+      margin: 0 0 16px;
+      font-size: 1em;
+      opacity: 0.75;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    section .textbox p { line-height: 1.4em; max-width: 320px; }
+
+    /* Flipbook section */
+    section.foot {
+      height: auto;
+      min-height: 100vh;
+      padding: 120px 0 80px;
+      background: rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    #flipbook {
+      width: 600px;
+      height: 600px;
+      background: #888;
+      position: relative;
+    }
+
+    #controls {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      justify-content: center;
+    }
+    #controls button {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: monospace;
+      font-size: 2em;
+      padding: 0 12px;
+      cursor: pointer;
+    }
+    #controls button:hover:not(:disabled) { color: #ffc; }
+    #controls button:disabled { opacity: 0.35; cursor: not-allowed; }
+    #counter {
+      font-size: 13px;
+      min-width: 70px;
+      text-align: center;
+      color: #fff;
+    }
+
+    #loader {
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    #loader[hidden] { display: none; }
+
+    /* Fullscreen button */
+    #fullscreen {
+      position: fixed;
+      top: 20px; right: 20px;
+      width: 32px; height: 32px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      z-index: 1001;
+      cursor: pointer;
+    }
+    #fullscreen svg { width: 100%; height: 100%; fill: #fff; }
+    #fullscreen svg:last-child { display: none; }
+    body.fullscreen #fullscreen svg:first-child { display: none; }
+    body.fullscreen #fullscreen svg:last-child  { display: block; }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      #flipbook { width: 90vw; height: 90vw; }
+      section .textbox { right: 24px; bottom: 24px; }
+      section .textbox h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fullscreen toggle -->
+  <button id="fullscreen" aria-label="Fullscreen">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z"/>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M14,14H19V16H16V19H14V14M5,14H10V19H8V16H5V14M8,5H10V10H5V8H8V5M19,8V10H14V5H16V8H19Z"/>
+    </svg>
+  </button>
+
+  <!-- Header -->
+  <header class="container">
+    <div id="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 400">
+        <defs>
+          <filter id="filter1" x="0" y="0">
+            <feOffset result="offOut" in="SourceAlpha" dx="5" dy="5" />
+            <feGaussianBlur result="blurOut" in="offOut" stdDeviation="3" />
+            <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+          </filter>
+        </defs>
+        <path d="m342 194 6-10 2-7q0-4-8-4h-7l-4 3q-3 2-12 20-17 32-27 30l7-21 8-27q0-2-3-4l-6-2-4 2-4 1-2-1-6-3q-5-2-11-2-8 0-15 5l-13 15q-8 11-16 18t-22 10l12-28 12-26q0-5-2-9-3-4-7-4-7 0-12 4l-11 12-12 17q-9 11-19 20-27 24-44 32-12 6-25 6-16 0-26-14l-6-12q-2-6-1-22t15-40 39-41q24-18 45-27 18-7 47-7 10 0 17 4 6 4 6 10l-2 8-10 17q-9 13-24 23-14 11-22 14l-19 7-18 5h-26l-11-1q3 8 9 11 5 3 14 3 18 0 44-11 20-9 35-20 14-11 29-33 14-22 12-27t-10-11l-6-3h-2l-3-1-8-2h-26q-19 2-44 11-24 10-47 29t-38 44-15 49q-2 29 16 42 13 9 33 9l17-2q13-3 34-15t45-46l-12 28q-4 9-7 12-2 4-8 7l-9 6-20 14-20 16-16 13q-11 10-12 20t3 16 11 6q8 0 14-2 6-1 25-18t37-42l16-25 7-13q5-8 8-8l8-4 6-3 8-4 7-2v3l1 10q0 5 4 11 3 6 10 2 6-4 11-10l10-12 5-6q-1 10 2 19 2 8 5 11 8-1 17-8 10-6 13-12h1q0 6 4 13l5 8q8-2 17-9t12-14l2 3 2 5 4 6 3 3q4 0 15-8 11-9 18-17-2 10 2 19 3 8 6 11 13-5 27-19 14-15 17-27l-17 18-19 17 6-24 9-24-2-3-8-2-4 1-4 1-7-3q-6-3-13-3l-9 1-7 3-14 22q-8 14-17 24-8 9-12 9 3-18 11-34m31 19 3-9q7-13 25-25-4 20-13 31l-7 5-3 2q-4 0-5-4M93 318q-4-4 0-11 10-19 76-64l-28 40-17 21q-7 9-13 12-5 4-11 4-5 0-7-2m160-105q0-4 3-10 8-15 25-24 0 14-11 27l-8 8q-3 3-5 3-4 0-4-4m114-79-2-3q-2-3-5-3-5 0-10 4-4 3-5 8-2 5 0 8 3 4 9 4 3 0 8-5 5-6 5-13"
+              fill="#fff" filter="url(#filter1)"/>
+        <text x="240" y="290" fill="#fff" font-size="36">exclusive</text>
+      </svg>
+    </div>
+
+    <ul id="places">
+      <li><a href="#!the_fort">The Fort</a></li>
+      <li><a href="#!ikoma_house">Ikoma House</a></li>
+      <li><a href="#!nakweni_villa">Nakweni Porini Villa</a></li>
+      <li><a href="#!rubondo_island">Rubondo Island Villa</a></li>
+      <li><a href="#!pangani_beach">Beach Under Canvas</a></li>
+    </ul>
+  </header>
+
+  <!-- Photo section -->
+  <section>
+    <img src="assets/images/beach00006.jpeg" alt="Nakweni horse riding">
+    <div class="textbox">
+      <h1>The Fort, Arusha</h1>
+      <h2>Boutique Lodge</h2>
+      <p>text goes here</p>
+      <p><a href="#!ikoma_house">next →</a></p>
+    </div>
+  </section>
+
+  <!-- Flipbook section -->
+  <section class="foot">
+    <div id="flipbook"></div>
+
+    <div id="controls">
+      <button id="prev" disabled>◀</button>
+      <span id="counter">1 / 1</span>
+      <button id="next">▶</button>
+    </div>
+
+    <div id="loader">Loading…</div>
+  </section>
+
+  <script>
+    // ---------- fullscreen ----------
+    const fsBtn = document.getElementById('fullscreen');
+    fsBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen?.();
+      } else {
+        document.exitFullscreen?.();
+      }
+    });
+    document.addEventListener('fullscreenchange', () => {
+      document.body.classList.toggle('fullscreen', !!document.fullscreenElement);
+    });
+  </script>
+
+</body>
+</html>
