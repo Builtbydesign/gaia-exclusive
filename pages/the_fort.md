@@ -1,3 +1,4 @@
-#The Fort, Arusha Boutique Lodge
+# The Fort, Arusha
+## Boutique Lodge
 
 text goes here
