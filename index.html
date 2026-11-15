@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>gaia · exclusive</title>
   <style>
     @font-face {
@@ -12,7 +12,6 @@
       font-style: normal;
       font-display: swap;
     }
-
     @font-face {
       font-family: LibreBaskerville-Regular;
       src: url("font/LibreBaskerville-Regular.otf") format("opentype");
@@ -21,67 +20,143 @@
       font-display: swap;
     }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
-      margin: 0;
-      padding: 0;
-      background: #f4ecdf;
-      min-height: 100vh;
-    }
-    body {
-      width: 100%;
-    }
-    a { color: rgba(0, 0, 0, 0.6); }
-    a:hover { color: #000; }
-    #wrap {
-      display: block;
-      margin: 0 auto;
-    }
-    .topbar {
-      max-width: 700px;
-      margin: 0 auto;
-      position: relative;
-    }
-    #content {
-      display: block;
-      font-family: 'Montserrat-Regular';
-      overflow: hidden;
-      padding: 15px;
+      height: 100%;
+      background: #333;
+      font-family: 'Montserrat-Regular', system-ui, sans-serif;
     }
 
-    #content {
-      max-width: 700px;
+    #logo {
+      display: block;
+      width: 200px;
+      height: 130px;
+      font-family: 'Montserrat-Regular';
+      position: relative;
+      z-index: 99;
+    }
+    section {
+      display: block;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      padding: 0;
       margin: 0 auto;
+      position: relative;
+      z-index: 9;
     }
-    #content .pagetitle {
+
+    header.container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 2;
+    }
+    section.hero {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      margin: 0 auto;
+      padding: 0;
+      z-index: 1;
+    }
+    section.hero img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: fixed;
+    }
+    section.hero .textbox {
+      position: absolute;
+      right: 50px;
+      bottom: 40px;
+      color: #fff;
+      z-index: 2;
+      margin-bottom: 30px;
+      line-height: 1.4em;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    }
+    section.hero .textbox h1 { margin: 0 0 8px; }
+    section.hero .textbox h2 {
+      margin: 0 0 16px;
+      font-size: 1em;
+      opacity: 0.8;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    section.hero .textbox p { line-height: 1.4em; max-width: 320px; }
+    section.hero .textbox a { color: #fff; }
+
+    ul#places {
+      font-family: 'Montserrat-Regular';
+      margin: -10px 0 0 0;
+      padding: 20px;
+      line-height: 24px;
+      position: relative;
+      z-index: 999;
+      text-indent: 1em;
+      text-align: left;
+      width: 230px;
+      font-size: 15px;
+      list-style: none;
+    }
+    a { color: #fff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    section.content {
+      position: relative;
+      height: auto;
+      min-height: 100vh;
+      background: rgba(0, 0, 0, 0.8) radial-gradient(ellipse at center,
+        rgba(0,0,0,0.2) 1%,
+        rgba(0,0,0,0.6) 100%);
+      z-index: 99999;
+      color: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      margin-bottom: 1em;
+      flex-direction: column;
     }
-    #content .pagetitle h1 {  
+
+    #content-inner {
+      width: 700px;
+      text-align: left;
+      margin: 2em 0;
+    }
+    #content-inner .pagetitle {
+      text-align: center;
+      margin-bottom: 2em;
+    }
+    #content-inner .pagetitle h1 {
       font-size: 3em;
       font-style: italic;
       margin: 0.2em 0;
     }
-    #content p,
-    #content h1,
-    #content h2,
-    #content h3,
-    #content h4 {
+    #content-inner p,
+    #content-inner h1,
+    #content-inner h2,
+    #content-inner h3,
+    #content-inner h4 {
       line-height: 30px;
       margin: 1em 0 0 0;
       padding: 0;
     }
-    #content h1,
-    #content h2,
-    #content h3,
-    #content h4 {
+    #content-inner h1,
+    #content-inner h2,
+    #content-inner h3,
+    #content-inner h4 {
       font-family: LibreBaskerville-Regular;
       font-weight: normal;
       color: #A84B22;
     }
-    #content h1 b,
-    #content h2 b {
-      color: #000;
-    }
+    #content-inner h1 b,
+    #content-inner h2 b { color: #999; }
 
     .stats {
       display: grid;
@@ -93,191 +168,49 @@
       opacity: 0.5;
       letter-spacing: 2px;
     }
-    .ikoma_house .stats {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .nakweni_villa .stats {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+    .ikoma_house .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .nakweni_villa .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .stat {
       padding: 8px 0;
-      border-bottom: 1px solid #CFC3AE;
       display: flex;
       flex-direction: column;
       gap: 1px;
     }
     .stats p,
-    .stats h2 {
-      margin: 0 !important;
-    }
-    .stats p {
-      font-size: 80%;
-    }
+    .stats h2 { margin: 0 !important; }
+    .stats p { font-size: 80%; }
 
-    #content img {
-      max-width:200px;
+    #content-inner img {
+      max-width: 200px;
       float: left;
       padding: 10px;
     }
-    #content ul {
+    #content-inner ul {
       margin: 1em;
       padding: 0;
       line-height: 2em;
     }
-    #header {
-      display: block;
-      text-align: right;
-      font-family: 'Montserrat-Regular';
-      width: 100%;
-      padding: 0 0 20px 0;
-      position: relative;
-    }
-
-    svg#logo {
-      width: 250px;
-      height: 160px;
-      display: block;
-      margin: 0;
-      overflow: hidden;
-      font-family: 'Montserrat-Regular';
-    }
-
-    .ink {
-      fill: none;
-      stroke: #000;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-
-    ul#places {
-      font-family: 'Montserrat-Regular';
-      margin: 0;
-      padding:0 20px;
-      line-height: 24px;
-      z-index: 999;
-      width: 230px;
-      text-align: right;
-      list-style: none;
-      position: absolute;
-      top: 20px;
-      right: 0;
-    }
-    
-    ul li a { 
-      font-size: 1em; 
-      text-decoration: none; 
-      cursor: pointer; 
-      display: block; 
-    }
-
-    #content img {
-      width: 100%;
+    .cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0 32px;
       margin: 1em 0;
+      align-items: start;
     }
-
-
-    /* ---------- footer ---------- */
-    footer {
-      clear: both;
-      flex: none;
-      margin-top: auto;
-      padding: 24px 0;
-      border-top: 1px solid #D6CBB8;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      margin-top: 1em;
-      display: none;
-    }
-    .contact {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      font-family: 'Montserrat-Regular', sans-serif;
-      font-size: 12px;
-      color: #3A342B;
-    }
-    .contact strong {
-      font-family: 'Montserrat-Regular', sans-serif;
-      font-weight: 500;
-      letter-spacing: 2px;
-      color: #A84B22;
-    }
-    .contact a {
-      color: #2F3A28;
-      text-decoration: none;
-      border-bottom: 1px dotted #8C7F66;
-    }
-    .book {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 6px;
-    }
-    .book .cta {
-      background: #A84B22;
-      color: #F4EFE3;
-      font-family: 'Montserrat-Regular', sans-serif;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 10px 24px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .book small {
-      font-family: 'Montserrat-Regular', sans-serif;
-      font-size: 10px;
-      color: #8C7F66;
-      letter-spacing: 1px;
-    }
-
-    /* ---------- bottom strip ---------- */
-    .strip {
-      flex: none;
-      color: #F4EFE3;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 48px;
-      font-family: 'Montserrat-Regular', sans-serif;
-      font-weight: 400;
-      font-size: 10px;
-      letter-spacing: 3px;
-    }
+    .cols h2 { margin-top: 0; }
+    .cols ul { margin: 0; padding-left: 18px; }
   </style>
 </head>
 <body>
-  <div id="wrap">
-  <div id="header">
-    <div class="topbar">
+  <header class="container">
     <a href="#!home" id="homelink">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 400" id="logo">
-        <defs>
-          <clipPath id="mask">
-            <path id="ink" d="m342 194 6-10 2-7q0-4-8-4h-7l-4 3q-3 2-12 20-17 32-27 30l7-21 8-27q0-2-3-4l-6-2-4 2-4 1-2-1-6-3q-5-2-11-2-8 0-15 5l-13 15q-8 11-16 18t-22 10l12-28 12-26q0-5-2-9-3-4-7-4-7 0-12 4l-11 12-12 17q-9 11-19 20-27 24-44 32-12 6-25 6-16 0-26-14l-6-12q-2-6-1-22t15-40 39-41q24-18 45-27 18-7 47-7 10 0 17 4 6 4 6 10l-2 8-10 17q-9 13-24 23-14 11-22 14l-19 7-18 5h-26l-11-1q3 8 9 11 5 3 14 3 18 0 44-11 20-9 35-20 14-11 29-33 14-22 12-27t-10-11l-6-3h-2l-3-1-8-2h-26q-19 2-44 11-24 10-47 29t-38 44-15 49q-2 29 16 42 13 9 33 9l17-2q13-3 34-15t45-46l-12 28q-4 9-7 12-2 4-8 7l-9 6-20 14-20 16-16 13q-11 10-12 20t3 16 11 6q8 0 14-2 6-1 25-18t37-42l16-25 7-13q5-8 8-8l8-4 6-3 8-4 7-2v3l1 10q0 5 4 11 3 6 10 2 6-4 11-10l10-12 5-6q-1 10 2 19 2 8 5 11 8-1 17-8 10-6 13-12h1q0 6 4 13l5 8q8-2 17-9t12-14l2 3 2 5 4 6 3 3q4 0 15-8 11-9 18-17-2 10 2 19 3 8 6 11 13-5 27-19 14-15 17-27l-17 18-19 17 6-24 9-24-2-3-8-2-4 1-4 1-7-3q-6-3-13-3l-9 1-7 3-14 22q-8 14-17 24-8 9-12 9 3-18 11-34m31 19 3-9q7-13 25-25-4 20-13 31l-7 5-3 2q-4 0-5-4M93 318q-4-4 0-11 10-19 76-64l-28 40-17 21q-7 9-13 12-5 4-11 4-5 0-7-2m160-105q0-4 3-10 8-15 25-24 0 14-11 27l-8 8q-3 3-5 3-4 0-4-4m114-79-2-3q-2-3-5-3-5 0-10 4-4 3-5 8-2 5 0 8 3 4 9 4 3 0 8-5 5-6 5-13"/>
-          </clipPath>
-        </defs>
-
-        <g clip-path="url(#mask)">
-          <path id="a" class="ink" stroke-width="20" d="M107.55 171.175q.992383.037695 2 .075 4.15.1 12.55.35 8.3.2 16.1-.7 7.65-.9 19-4.85 11.35-3.9 19.7-7.25 8.3-3.3 23-14.2 14.751953-10.895898 21.925-22.05 7.16504-11.165234 11-18 3.842773-6.832227 5.025-14.275 1.17871-7.436523-8.875-12.35-10.052734-4.906445-34.45-3.75Q170.137305 75.321484 146.9 86.6q-23.245117 11.285156-43.85 29.15-20.597852 17.854688-33.275 42.2-12.69121 24.351367-13.75 41.125-1.047852 16.767383 1.325 22.95 2.360742 6.189844 10.925 16.5 8.568164 10.301367 28.85 10.25 20.285352-.041797 36.225-11.9 15.936914-11.869531 34.55-29.275 18.61543-17.400586 23.975-23.6 5.370898-6.18789 12.175-15.075 6.795898-8.889844 10.9-11.6.293164-.194336 5.6-1.375"/>
-          <path id="b" class="ink" stroke-width="25" d="M220.55 155.95q-8.189648 16.282617-18.5 39.675-5.79707 13.141992-12.725 27.15-7.441797 14.787305-11.925 23.2-14.164258 26.587305-34.95 50.975-20.789258 24.375977-36.6 27.7"/>
-          <path id="c" class="ink" stroke-width="15" d="M105.85 324.65q-55.49375-3.7 83.65-97.65 46.567187-18.274805 62.225-39.45 16.588477-22.424023 36.025-9.8"/>
-          <path id="d" class="ink" stroke-width="20" d="M287.75 177.75q-29.617773-9.37461-40.225 28.725-10.599023 38.104883 15.375 13.825 20.1-24.05 36.15-44.45"/>
-          <path id="e" class="ink" stroke-width="20" d="M299.05 175.85q-13.500781 26.360156-13.9 42.4-.48164 11.371875 1.8 14.2 18.419336-5.099805 30.9-28.45l20.1-27.05"/>
-          <path id="f" class="ink" stroke-width="20" d="M337.95 176.95q-17.842187 33.829492-12.55 55.5 9.339453-1.26211 15.3-6.5 14.870117-17.075195 31.625-43 11.483398-13.920898 31.875-7.5"/>
-          <path id="g" class="ink" stroke-width="18" d="M404.2 175.45q-23.919336-1.501562-37.975 31.05-14.045508 32.542578 22.225 6 14.55-16.25 30.6-36.65"/>
-          <path id="h" class="ink" stroke-width="19" d="M419.05 175.85q-13.5 26.35-13.9 42.4-.5 11.35 1.8 14.2 18.4-5.1 42.05-41.45"/>
-          <path id="i" class="ink" stroke-width="20" d="M 357.45 135.95L 352.45 144.95"/>
-        </g>
-        <use id="grey" href="#ink" fill="rgba(0,0,0,0.2)" />
-        <text id="txt" x="240" y="290" fill="#000" font-size="36">exclusive</text>
+    <div id="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 400" id="svglogo">
+        <path id="ink" d="m342 194 6-10 2-7q0-4-8-4h-7l-4 3q-3 2-12 20-17 32-27 30l7-21 8-27q0-2-3-4l-6-2-4 2-4 1-2-1-6-3q-5-2-11-2-8 0-15 5l-13 15q-8 11-16 18t-22 10l12-28 12-26q0-5-2-9-3-4-7-4-7 0-12 4l-11 12-12 17q-9 11-19 20-27 24-44 32-12 6-25 6-16 0-26-14l-6-12q-2-6-1-22t15-40 39-41q24-18 45-27 18-7 47-7 10 0 17 4 6 4 6 10l-2 8-10 17q-9 13-24 23-14 11-22 14l-19 7-18 5h-26l-11-1q3 8 9 11 5 3 14 3 18 0 44-11 20-9 35-20 14-11 29-33 14-22 12-27t-10-11l-6-3h-2l-3-1-8-2h-26q-19 2-44 11-24 10-47 29t-38 44-15 49q-2 29 16 42 13 9 33 9l17-2q13-3 34-15t45-46l-12 28q-4 9-7 12-2 4-8 7l-9 6-20 14-20 16-16 13q-11 10-12 20t3 16 11 6q8 0 14-2 6-1 25-18t37-42l16-25 7-13q5-8 8-8l8-4 6-3 8-4 7-2v3l1 10q0 5 4 11 3 6 10 2 6-4 11-10l10-12 5-6q-1 10 2 19 2 8 5 11 8-1 17-8 10-6 13-12h1q0 6 4 13l5 8q8-2 17-9t12-14l2 3 2 5 4 6 3 3q4 0 15-8 11-9 18-17-2 10 2 19 3 8 6 11 13-5 27-19 14-15 17-27l-17 18-19 17 6-24 9-24-2-3-8-2-4 1-4 1-7-3q-6-3-13-3l-9 1-7 3-14 22q-8 14-17 24-8 9-12 9 3-18 11-34m31 19 3-9q7-13 25-25-4 20-13 31l-7 5-3 2q-4 0-5-4M93 318q-4-4 0-11 10-19 76-64l-28 40-17 21q-7 9-13 12-5 4-11 4-5 0-7-2m160-105q0-4 3-10 8-15 25-24 0 14-11 27l-8 8q-3 3-5 3-4 0-4-4m114-79-2-3q-2-3-5-3-5 0-10 4-4 3-5 8-2 5 0 8 3 4 9 4 3 0 8-5 5-6 5-13" fill="#fff" />
+        <text id="txt" x="240" y="290" fill="#fff" font-size="36">exclusive</text>
       </svg>
-    </a>
+    </div>
+  </a>
 
     <ul id="places">
       <li><a href="#!the_fort">The Fort</a></li>
@@ -285,45 +218,74 @@
       <li><a href="#!nakweni_villa">Nakweni Porini Villa</a></li>
       <li><a href="#!rubondo_island">Rubondo Island Villa</a></li>
       <li><a href="#!pangani_beach">Beach Under Canvas</a></li>
-    </ul>    
-  </div>
-  </div>
+    </ul>
+  </header>
 
+  <section class="hero">
+    <img id="hero-img" src="assets/beach00006.jpeg" alt="">
+    <div class="textbox">
+      <h1 id="hero-title">The Fort, Arusha</h1>
+      <h2 id="hero-subtitle">Boutique Lodge</h2>
+    </div>
+  </section>
 
-  <div id="content">
+  <section class="content">
     <div id="content-inner"></div>
-  </div>
-
-</div><!-- wrap -->
+  </section>
 
   <script src="js/marked.js"></script>
   <script>
     const body = document.body;
     const cache = {};
     const inner = document.getElementById('content-inner');
+    const heroTitle = document.getElementById('hero-title');
+    const heroSubtitle = document.getElementById('hero-subtitle');
+    const heroImg = document.getElementById('hero-img');
 
     async function load(page) {
       if (cache[page]) return cache[page];
       try {
         const res = await fetch(`pages/${page}.md`);
         if (!res.ok) throw new Error();
-        let text = await res.text();
-        text = text.replace(/^---[\s\S]*?---\n/, '');
-        const html = marked(text);
-        cache[page] = html;
-        body.className = page;
-        return html;
+        const raw = await res.text();
+
+        const meta = {};
+        const fm = raw.match(/^---\n([\s\S]*?)\n---\n/);
+        if (fm) {
+          fm[1].split('\n').forEach(line => {
+            const i = line.indexOf(':');
+            if (i > 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+          });
+        }
+
+        const html = marked(raw.replace(/^---[\s\S]*?---\n/, ''));
+        return (cache[page] = {
+          html,
+          title: meta.title || page,
+          subtitle: meta.subtitle || '',
+          image: meta.image || '',
+          alt: meta.alt || ''
+        });
       } catch {
-        const fallback = marked(`# 404\n\nPage not found. [Home](#!home).`);
-        cache[page] = fallback;
-        body.className = page;
-        return fallback;
+        return (cache[page] = {
+          html: marked('# 404\n\nPage not found. [Home](#!home).'),
+          title: '404',
+          subtitle: '',
+          image: '',
+          alt: ''
+        });
       }
     }
 
     async function transitionTo(page, push = true) {
-      const html = await load(page);
+      const { html, title, subtitle, image, alt } = await load(page);
       inner.innerHTML = html;
+      heroTitle.textContent = title;
+      heroSubtitle.textContent = subtitle;
+      if (image) {
+        heroImg.src = image;
+        heroImg.alt = alt;
+      }
       body.className = page;
       if (push) history.pushState(null, '', `#!${page}`);
     }
@@ -343,21 +305,19 @@
       transitionTo(page, false);
     });
 
-    // Initial load
     (async () => {
-      const initialPage = location.hash.substring(2) || 'home';
-      const html = await load(initialPage);
+      const page = location.hash.substring(2) || 'home';
+      const { html, title, subtitle, image, alt } = await load(page);
       inner.innerHTML = html;
-      if (location.hash) history.replaceState(null, '', `#!${initialPage}`);
+      heroTitle.textContent = title;
+      heroSubtitle.textContent = subtitle;
+      if (image) {
+        heroImg.src = image;
+        heroImg.alt = alt;
+      }
       body.className = page;
+      if (location.hash) history.replaceState(null, '', `#!${page}`);
     })();
-
-    // Draw logo paths instantly
-    document.querySelectorAll('.ink').forEach(path => {
-      const length = path.getTotalLength();
-      path.style.strokeDasharray = length + ' ' + length;
-      path.style.strokeDashoffset = '0';
-    });
   </script>
 </body>
 </html>
