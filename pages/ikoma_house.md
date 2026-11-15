@@ -1,13 +1,17 @@
+---
+title: Ikoma House
+subtitle: Serengeti National Park boundary
+image: assets/beach00015.jpeg
+---
+
 <div class="pagetitle">
 <p>- A GAIA EXCLUSIVE VILLA -</p>
 <h1><b>Ikoma</b> House</h1>
-
-<p>A PRIVATE, FULLY STAFFED BUSH VILLA ON THE SERENGETI BORDER</p>
 </div>
 
-![Illustrative map of Serengeti National Park (not to scale)](map1.png)
+<!-- ![Illustrative map of Serengeti National Park (not to scale)](map1.png) -->
 
-Set on 20 acres of protected land on the border of Serengeti National Park, Ikoma House is yours alone: ride out on horseback among the wildlife, walk the bush from your doorstep, and return to an infinity pool and a private chef. Because the villa sits just outside the park, there are **no nightly park or concession fees**.
+A private, fully staffed bush villa on the serengeti border. Set on 20 acres of protected land on the border of Serengeti National Park, Ikoma House is yours alone: ride out on horseback among the wildlife, walk the bush from your doorstep, and return to an infinity pool and a private chef. Because the villa sits just outside the park, there are **no nightly park or concession fees**.
 
 <div class="stats">
   <div class="stat"><h2>Sleeps 8</h2><p>Exclusive use, one party at a time</p></div>
@@ -18,7 +22,7 @@ Set on 20 acres of protected land on the border of Serengeti National Park, Ikom
 
 A wide veranda wraps around a **four-edge infinity pool**, surrounded on every side by bush. The tents sit apart in secluded bush for extra privacy.
 
-## WHY IKOMA HOUSE
+## Why Ikoma House
 
 - Horseback safaris with our own stable of six horses.
 - No park fees unless you choose a day inside the park.
@@ -28,7 +32,7 @@ A wide veranda wraps around a **four-edge infinity pool**, surrounded on every s
 - A conservation story – 450+ indigenous trees replanted.
 - Completely private – one party, a full private staff.
 
-## EXPERIENCES · BOOKED SEPARATELY · USD
+## Experiences · Book Separately · USD
 
 
 <span>**Horse riding, 2 hours** · 170 pp
@@ -50,13 +54,13 @@ In the wildlife management areas</span>
 Straight from the villa</span>
 
 
-## RATE
+## Rate
 
 **USD 395** per person per night
 
 Full board with drinks (top-shelf spirits on request at extra cost) · private chef · dedicated butler · daily housekeeping · complimentary Wi-Fi
 
-## GETTING THERE
+## Getting There
 
 Fort Ikoma airstrip 15 min, outside the park · Seronera airstrip 45 min, inside the Serengeti · transfers on request
 
