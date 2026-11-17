@@ -245,7 +245,7 @@
     async function load(page) {
       if (cache[page]) return cache[page];
       try {
-        const res = await fetch(`pages/${page}.md`);
+        const res = await fetch(`content/${page}.md`);
         if (!res.ok) throw new Error();
         const raw = await res.text();
 
