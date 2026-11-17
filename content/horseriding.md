@@ -1,7 +1,7 @@
 ---
 title: Horseriding
 subtitle: Serengeti Private Villa
-image:assets/wide/beach00006.jpeg
+image: assets/wide/beach00006.jpeg
 ---
 
 
