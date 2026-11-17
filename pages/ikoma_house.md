@@ -9,7 +9,7 @@ image: assets/wide/beach00015.jpeg
 <h1><b>Ikoma</b> House</h1>
 </div>
 
-<!-- ![Illustrative map of Serengeti National Park (not to scale)](map1.png) -->
+![Illustrative map of Serengeti National Park (not to scale)](assets/map1.png)
 
 A private, fully staffed bush villa on the serengeti border. Set on 20 acres of protected land on the border of Serengeti National Park, Ikoma House is yours alone: ride out on horseback among the wildlife, walk the bush from your doorstep, and return to an infinity pool and a private chef. Because the villa sits just outside the park, there are **no nightly park or concession fees**.
 
