@@ -1,3 +1,0 @@
-# about
-
-Lorem ipsum dolor
