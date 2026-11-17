@@ -34,24 +34,12 @@ A wide veranda wraps around a **four-edge infinity pool**, surrounded on every s
 
 ## Experiences · Book Separately · USD
 
-
-<span>**Horse riding, 2 hours** · 170 pp
-Ride among the wildlife on the Serengeti border</span>
-
-<span>**Horse riding, half day** · 275 pp
-Includes a bush breakfast</span>
-
-<span>**Horse riding, full day** · 480 pp
-Bush breakfast, late snack and drinks</span>
-
-<span>**Serengeti game drive, full day** · 350 pp
-Packed lunch, park fees included</span>
-
-<span>**Night game drive** · 250 / vehicle + 30 pp
-In the wildlife management areas</span>
-
-<span>**Guided bush walk** · 20 pp
-Straight from the villa</span>
+- **Horse riding, 2 hours** · 170 pp — Ride among the wildlife on the Serengeti border
+- **Horse riding, half day** · 275 pp — Includes a bush breakfast
+- **Horse riding, full day** · 480 pp — Bush breakfast, late snack and drinks
+- **Serengeti game drive, full day** · 350 pp — Packed lunch, park fees included
+- **Night game drive** · 250 / vehicle + 30 pp — In the wildlife management areas
+- **Guided bush walk** · 20 pp — Straight from the villa
 
 
 ## Rate
