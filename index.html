@@ -2,215 +2,196 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>gaia · exclusive</title>
+
+  <link rel="preload" href="font/Montserrat-Regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="font/LibreBaskerville-Regular.otf" as="font" type="font/otf" crossorigin>
+
   <style>
     @font-face {
-      font-family: 'Montserrat-Regular';
+      font-family: 'Montserrat';
       src: url('font/Montserrat-Regular.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
       font-display: swap;
     }
     @font-face {
-      font-family: LibreBaskerville-Regular;
-      src: url("font/LibreBaskerville-Regular.otf") format("opentype");
-      font-weight: normal;
-      font-style: normal;
+      font-family: 'Libre Baskerville';
+      src: url('font/LibreBaskerville-Regular.otf') format('opentype');
       font-display: swap;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     html, body {
       height: 100%;
-      background: #333;
-      font-family: 'Montserrat-Regular', system-ui, sans-serif;
+      background: #222;
+      font-family: 'Montserrat', system-ui, sans-serif;
+      color: #eee;
     }
+
+    a { color: #fff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 100;
+      pointer-events: none;
+    }
+    header a, header ul { pointer-events: auto; }
 
     #logo {
       display: block;
       width: 200px;
       height: 130px;
-      font-family: 'Montserrat-Regular';
-      position: relative;
-      z-index: 99;
-    }
-    section {
-      display: block;
-      width: 100%;
-      height: 100vh;
-      height: 100dvh;
-      padding: 0;
-      margin: 0 auto;
-      position: relative;
-      z-index: 9;
     }
 
-    header.container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 2;
+    #places {
+      list-style: none;
+      padding: 8px 20px 20px;
+      font-size: 15px;
+      line-height: 1.65;
+      width: 240px;
     }
-    section.hero {
+    #places li { text-indent: 1em; }
+
+    /* Hero – always full viewport */
+    .hero {
       position: relative;
-      display: block;
-      width: 100%;
       height: 100vh;
       height: 100dvh;
       overflow: hidden;
-      margin: 0 auto;
-      padding: 0;
-      z-index: 1;
     }
-    section.hero img {
-      display: block;
+    .hero img {
+      position: fixed;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      position: fixed;
     }
-    section.hero .textbox {
+    .hero .textbox {
       position: absolute;
-      right: 50px;
-      bottom: 40px;
+      right: 48px;
+      bottom: 64px;
       color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,.65);
       z-index: 2;
-      margin-bottom: 30px;
-      line-height: 1.4em;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+      max-width: 380px;
     }
-    section.hero .textbox h1 { margin: 0 0 8px; }
-    section.hero .textbox h2 {
-      margin: 0 0 16px;
-      font-size: 1em;
-      opacity: 0.8;
-      letter-spacing: 0.1em;
+    .hero .textbox h1 {
+      margin: 0 0 6px;
+      font-size: clamp(1.6rem, 4vw, 2.1rem);
+      font-weight: 400;
+    }
+    .hero .textbox h2 {
+      margin: 0;
+      font-size: .9rem;
+      letter-spacing: .14em;
       text-transform: uppercase;
+      opacity: .85;
     }
-    section.hero .textbox p { line-height: 1.4em; max-width: 320px; }
-    section.hero .textbox a { color: #fff; }
 
-    ul#places {
-      font-family: 'Montserrat-Regular';
-      margin: -10px 0 0 0;
-      padding: 20px;
-      line-height: 24px;
+    .content {
+      display: none;
       position: relative;
-      z-index: 999;
-      text-indent: 1em;
-      text-align: left;
-      width: 230px;
-      font-size: 15px;
-      list-style: none;
-    }
-    a { color: #fff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    section.content {
-      position: relative;
-      height: auto;
-      min-height: 100vh;
-      background: rgba(0, 0, 0, 0.8) radial-gradient(ellipse at center,
-        rgba(0,0,0,0.2) 1%,
-        rgba(0,0,0,0.6) 100%);
-      z-index: 99999;
-      color: #eee;
-      display: flex;
-      align-items: center;
+      z-index: 10;
+      min-height: 60vh;
+      padding: 5rem 1.5rem 6rem;
+      background: rgba(0,0,0,.82);
       justify-content: center;
-      text-align: center;
-      flex-direction: column;
+      min-height: 100vh;
+    }
+    .content.is-visible {
+      display: flex;
     }
 
     #content-inner {
-      width: 700px;
+      width: 100%;
+      max-width: 680px;
       text-align: left;
-      margin: 2em 0;
     }
+
     #content-inner .pagetitle {
       text-align: center;
-      margin-bottom: 2em;
+      margin-bottom: 2.2rem;
     }
     #content-inner .pagetitle h1 {
-      font-size: 3em;
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 2.9rem);
       font-style: italic;
-      margin: 0.2em 0;
-    }
-    #content-inner p,
-    #content-inner h1,
-    #content-inner h2,
-    #content-inner h3,
-    #content-inner h4 {
-      line-height: 30px;
-      margin: 1em 0 0 0;
-      padding: 0;
-    }
-    #content-inner h1,
-    #content-inner h2,
-    #content-inner h3,
-    #content-inner h4 {
-      font-family: LibreBaskerville-Regular;
       font-weight: normal;
       color: #A84B22;
+      margin: .2em 0;
     }
-    #content-inner h1 b,
-    #content-inner h2 b { color: #999; }
+    #content-inner .pagetitle h1 b { color: #999; }
+    #content-inner .pagetitle p:first-of-type {
+      opacity: .55;
+      letter-spacing: 2px;
+      font-size: .82rem;
+    }
 
+    #content-inner h1,
+    #content-inner h2,
+    #content-inner h3 {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-weight: normal;
+      color: #A84B22;
+      line-height: 1.35;
+      margin: 1.5em 0 .4em;
+    }
+
+    #content-inner p {
+      line-height: 1.7;
+      margin: 1em 0 0;
+    }
+
+    #content-inner ul {
+      margin: 1em 0 1em 1.25em;
+      line-height: 1.85;
+    }
+
+    #content-inner a { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Stats / columns (kept for other pages) */
     .stats {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0 8px;
-      margin: 1em 0;
+      grid-template-columns: repeat(2, 1fr);
+      gap: .6rem 1.2rem;
+      margin: 1.6em 0;
     }
-    .pagetitle p:first-of-type {
-      opacity: 0.5;
-      letter-spacing: 2px;
-    }
-    .ikoma_house .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .nakweni_villa .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .stat {
-      padding: 8px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-    }
-    .stats p,
-    .stats h2 { margin: 0 !important; }
-    .stats p { font-size: 80%; }
+    .nakweni_villa .stats { grid-template-columns: repeat(3, 1fr); }
+    .stat { display: flex; flex-direction: column; gap: 2px; }
+    .stat h2 { margin: 0 !important; font-size: 1.05rem; }
+    .stat p  { margin: 0 !important; font-size: .85rem; }
 
-    #content-inner img {
-      max-width: 200px;
-      float: left;
-      padding: 10px;
-    }
-    #content-inner ul {
-      margin: 1em;
-      padding: 0;
-      line-height: 2em;
-    }
     .cols {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0 32px;
-      margin: 1em 0;
-      align-items: start;
+      gap: 0 2rem;
+      margin: 1.6em 0;
     }
     .cols h2 { margin-top: 0; }
-    .cols ul { margin: 0; padding-left: 18px; }
+
+    @media (max-width: 700px) {
+      .hero .textbox { right: 24px; bottom: 48px; }
+      .cols { grid-template-columns: 1fr; }
+      .nakweni_villa .stats { grid-template-columns: 1fr 1fr; }
+      #places { width: 200px; font-size: 14px; }
+    }
   </style>
 </head>
 <body>
-  <header class="container">
-    <a href="#!home" id="homelink">
-    <div id="logo">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 400" id="svglogo">
-        <path id="ink" d="m342 194 6-10 2-7q0-4-8-4h-7l-4 3q-3 2-12 20-17 32-27 30l7-21 8-27q0-2-3-4l-6-2-4 2-4 1-2-1-6-3q-5-2-11-2-8 0-15 5l-13 15q-8 11-16 18t-22 10l12-28 12-26q0-5-2-9-3-4-7-4-7 0-12 4l-11 12-12 17q-9 11-19 20-27 24-44 32-12 6-25 6-16 0-26-14l-6-12q-2-6-1-22t15-40 39-41q24-18 45-27 18-7 47-7 10 0 17 4 6 4 6 10l-2 8-10 17q-9 13-24 23-14 11-22 14l-19 7-18 5h-26l-11-1q3 8 9 11 5 3 14 3 18 0 44-11 20-9 35-20 14-11 29-33 14-22 12-27t-10-11l-6-3h-2l-3-1-8-2h-26q-19 2-44 11-24 10-47 29t-38 44-15 49q-2 29 16 42 13 9 33 9l17-2q13-3 34-15t45-46l-12 28q-4 9-7 12-2 4-8 7l-9 6-20 14-20 16-16 13q-11 10-12 20t3 16 11 6q8 0 14-2 6-1 25-18t37-42l16-25 7-13q5-8 8-8l8-4 6-3 8-4 7-2v3l1 10q0 5 4 11 3 6 10 2 6-4 11-10l10-12 5-6q-1 10 2 19 2 8 5 11 8-1 17-8 10-6 13-12h1q0 6 4 13l5 8q8-2 17-9t12-14l2 3 2 5 4 6 3 3q4 0 15-8 11-9 18-17-2 10 2 19 3 8 6 11 13-5 27-19 14-15 17-27l-17 18-19 17 6-24 9-24-2-3-8-2-4 1-4 1-7-3q-6-3-13-3l-9 1-7 3-14 22q-8 14-17 24-8 9-12 9 3-18 11-34m31 19 3-9q7-13 25-25-4 20-13 31l-7 5-3 2q-4 0-5-4M93 318q-4-4 0-11 10-19 76-64l-28 40-17 21q-7 9-13 12-5 4-11 4-5 0-7-2m160-105q0-4 3-10 8-15 25-24 0 14-11 27l-8 8q-3 3-5 3-4 0-4-4m114-79-2-3q-2-3-5-3-5 0-10 4-4 3-5 8-2 5 0 8 3 4 9 4 3 0 8-5 5-6 5-13" fill="#fff" />
-        <text id="txt" x="240" y="290" fill="#fff" font-size="36">exclusive</text>
-      </svg>
-    </div>
-  </a>
+  <header>
+    <a href="#!home" id="homelink" aria-label="Home">
+      <div id="logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 400">
+          <path fill="#fff" d="m342 194 6-10 2-7q0-4-8-4h-7l-4 3q-3 2-12 20-17 32-27 30l7-21 8-27q0-2-3-4l-6-2-4 2-4 1-2-1-6-3q-5-2-11-2-8 0-15 5l-13 15q-8 11-16 18t-22 10l12-28 12-26q0-5-2-9-3-4-7-4-7 0-12 4l-11 12-12 17q-9 11-19 20-27 24-44 32-12 6-25 6-16 0-26-14l-6-12q-2-6-1-22t15-40 39-41q24-18 45-27 18-7 47-7 10 0 17 4 6 4 6 10l-2 8-10 17q-9 13-24 23-14 11-22 14l-19 7-18 5h-26l-11-1q3 8 9 11 5 3 14 3 18 0 44-11 20-9 35-20 14-11 29-33 14-22 12-27t-10-11l-6-3h-2l-3-1-8-2h-26q-19 2-44 11-24 10-47 29t-38 44-15 49q-2 29 16 42 13 9 33 9l17-2q13-3 34-15t45-46l-12 28q-4 9-7 12-2 4-8 7l-9 6-20 14-20 16-16 13q-11 10-12 20t3 16 11 6q8 0 14-2 6-1 25-18t37-42l16-25 7-13q5-8 8-8l8-4 6-3 8-4 7-2v3l1 10q0 5 4 11 3 6 10 2 6-4 11-10l10-12 5-6q-1 10 2 19 2 8 5 11 8-1 17-8 10-6 13-12h1q0 6 4 13l5 8q8-2 17-9t12-14l2 3 2 5 4 6 3 3q4 0 15-8 11-9 18-17-2 10 2 19 3 8 6 11 13-5 27-19 14-15 17-27l-17 18-19 17 6-24 9-24-2-3-8-2-4 1-4 1-7-3q-6-3-13-3l-9 1-7 3-14 22q-8 14-17 24-8 9-12 9 3-18 11-34m31 19 3-9q7-13 25-25-4 20-13 31l-7 5-3 2q-4 0-5-4M93 318q-4-4 0-11 10-19 76-64l-28 40-17 21q-7 9-13 12-5 4-11 4-5 0-7-2m160-105q0-4 3-10 8-15 25-24 0 14-11 27l-8 8q-3 3-5 3-4 0-4-4m114-79-2-3q-2-3-5-3-5 0-10 4-4 3-5 8-2 5 0 8 3 4 9 4 3 0 8-5 5-6 5-13"/>
+          <text x="240" y="290" fill="#fff" font-size="36">exclusive</text>
+        </svg>
+      </div>
+    </a>
 
     <ul id="places">
       <li><a href="#!the_fort">The Fort</a></li>
@@ -222,102 +203,120 @@
   </header>
 
   <section class="hero">
-    <img id="hero-img" src="assets/beach00006.jpeg" alt="">
+    <img id="hero-img" src="assets/wide/beach00007.jpeg" alt="" fetchpriority="high">
     <div class="textbox">
-      <h1 id="hero-title">The Fort, Arusha</h1>
-      <h2 id="hero-subtitle">Boutique Lodge</h2>
+      <h1 id="hero-title">Gaia Exclusive</h1>
+      <h2 id="hero-subtitle">Private Villas & Lodges</h2>
     </div>
   </section>
 
-  <section class="content">
+  <section class="content" id="content">
     <div id="content-inner"></div>
   </section>
 
-  <script src="js/marked.js"></script>
+  <script src="js/marked.js" defer></script>
   <script>
-    const body = document.body;
     const cache = {};
+    const body = document.body;
+    const contentEl = document.getElementById('content');
     const inner = document.getElementById('content-inner');
     const heroTitle = document.getElementById('hero-title');
     const heroSubtitle = document.getElementById('hero-subtitle');
     const heroImg = document.getElementById('hero-img');
 
+    function hasSubstantialContent(html) {
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+
+
+      const title = temp.querySelector('.pagetitle');
+      if (title) title.remove();
+
+      const text = (temp.textContent || '').replace(/\s+/g, ' ').trim();
+
+      return text.length > 120;
+    }
+
     async function load(page) {
       if (cache[page]) return cache[page];
+
       try {
         const res = await fetch(`content/${page}.md`);
-        if (!res.ok) throw new Error();
+        if (!res.ok) throw new Error(res.status);
         const raw = await res.text();
 
         const meta = {};
-        const fm = raw.match(/^---\n([\s\S]*?)\n---\n/);
+        const fm = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
         if (fm) {
-          fm[1].split('\n').forEach(line => {
+          fm[1].split(/\r?\n/).forEach(line => {
             const i = line.indexOf(':');
             if (i > 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim();
           });
         }
 
-        const html = marked(raw.replace(/^---[\s\S]*?---\n/, ''));
+        const bodyMd = raw.replace(/^---[\s\S]*?---\r?\n/, '');
+        const html = (typeof marked.parse === 'function')
+          ? marked.parse(bodyMd)
+          : marked(bodyMd);
+
         return (cache[page] = {
           html,
           title: meta.title || page,
           subtitle: meta.subtitle || '',
           image: meta.image || '',
-          alt: meta.alt || ''
+          alt: meta.alt || '',
+          substantial: hasSubstantialContent(html)
         });
       } catch {
+        const fallback = (typeof marked.parse === 'function')
+          ? marked.parse('# 404\n\nPage not found.')
+          : marked('# 404\n\nPage not found.');
         return (cache[page] = {
-          html: marked('# 404\n\nPage not found. [Home](#!home).'),
+          html: fallback,
           title: '404',
           subtitle: '',
           image: '',
-          alt: ''
+          alt: '',
+          substantial: true
         });
       }
     }
 
-    async function transitionTo(page, push = true) {
-      const { html, title, subtitle, image, alt } = await load(page);
-      inner.innerHTML = html;
-      heroTitle.textContent = title;
-      heroSubtitle.textContent = subtitle;
-      if (image) {
-        heroImg.src = image;
-        heroImg.alt = alt;
+    async function show(page, push = true) {
+      const data = await load(page);
+
+      heroTitle.textContent = data.title;
+      heroSubtitle.textContent = data.subtitle;
+      if (data.image) {
+        heroImg.src = data.image;
+        heroImg.alt = data.alt || data.title;
       }
       body.className = page;
+
+      if (data.substantial) {
+        inner.innerHTML = data.html;
+        contentEl.classList.add('is-visible');
+      } else {
+        inner.innerHTML = '';
+        contentEl.classList.remove('is-visible');
+      }
+
       if (push) history.pushState(null, '', `#!${page}`);
     }
 
     document.addEventListener('click', e => {
-      const link = e.target.closest('a');
+      const link = e.target.closest('a[href^="#!"]');
       if (!link) return;
-      const href = link.getAttribute('href');
-      if (href && href.startsWith('#!')) {
-        e.preventDefault();
-        transitionTo(href.substring(2), true);
-      }
+      e.preventDefault();
+      show(link.getAttribute('href').slice(2));
     });
 
     window.addEventListener('popstate', () => {
-      const page = location.hash.substring(2) || 'home';
-      transitionTo(page, false);
+      show(location.hash.slice(2) || 'home', false);
     });
 
-    (async () => {
-      const page = location.hash.substring(2) || 'home';
-      const { html, title, subtitle, image, alt } = await load(page);
-      inner.innerHTML = html;
-      heroTitle.textContent = title;
-      heroSubtitle.textContent = subtitle;
-      if (image) {
-        heroImg.src = image;
-        heroImg.alt = alt;
-      }
-      body.className = page;
-      if (location.hash) history.replaceState(null, '', `#!${page}`);
-    })();
+    // Start
+    show(location.hash.slice(2) || 'home', false);
   </script>
 </body>
 </html>
