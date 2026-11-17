@@ -1,0 +1,5 @@
+# In the repo root
+touch .nojekyll
+git add .nojekyll
+git commit -m "Disable Jekyll so raw content/*.md files are served"
+git push
