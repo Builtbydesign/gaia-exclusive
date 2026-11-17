@@ -44,3 +44,8 @@ Comfortable tents, thoughtful camp service, and a rhythm set by the tide. Meals 
 ## Getting There
 
 Fly into Tanga or Kilimanjaro, then road transfer to Pangani · coastal transfers and timings arranged with your stay
+
+
+[slideshow 1](https://gaia-exclusive.com/flipbook.html#slideshow1)
+
+[slideshow 2](https://gaia-exclusive.com/flipbook.html#slideshow2)
